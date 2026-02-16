@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using RealEstateAPI.Data;
 using RealEstateAPI.Repositories;
 
@@ -7,14 +8,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddMemoryCache();
+
+builder.Services.AddScoped<CustomerRepository>();
+
+// Sonra Decorator (Cache) kaydýný yapýyoruz
+builder.Services.AddScoped<ICustomerRepository>(provider =>
+{
+    var innerRepository = provider.GetRequiredService<CustomerRepository>();
+    var memoryCache = provider.GetRequiredService<IMemoryCache>();
+    return new CachedCustomerRepository(innerRepository, memoryCache);
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 
 var app = builder.Build();
 
