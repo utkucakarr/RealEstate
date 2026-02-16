@@ -12,8 +12,8 @@ using RealEstateAPI.Data;
 namespace RealEstateAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260216122237_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260216131012_InitialCreatee")]
+    partial class InitialCreatee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,9 +83,6 @@ namespace RealEstateAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IsForSale")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -94,6 +91,9 @@ namespace RealEstateAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SquareMeter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

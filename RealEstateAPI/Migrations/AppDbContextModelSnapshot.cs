@@ -80,9 +80,6 @@ namespace RealEstateAPI.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IsForSale")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
@@ -91,6 +88,9 @@ namespace RealEstateAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SquareMeter")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")

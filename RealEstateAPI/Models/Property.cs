@@ -14,7 +14,7 @@ namespace RealEstateAPI.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; } // Fiyat
 
-        public ListingType IsForSale { get; set; } // Satılık mı? (True: Satılık, False: Kiralık)
+        public ListingType Status { get; set; } // Satılık mı? (True: Satılık, False: Kiralık)
         public string Address { get; set; } = string.Empty;
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
