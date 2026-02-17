@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using RealEstateAPI.Models;
+﻿using Core.Entites;
+using Core.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
-namespace RealEstateAPI.Repositories
+namespace Persistence.Repositories
 {
     public class CachedCustomerRepository : ICustomerRepository
     {

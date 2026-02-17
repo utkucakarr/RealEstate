@@ -1,6 +1,6 @@
-﻿namespace RealEstateAPI.Models
+﻿namespace Business.Dtos
 {
-    public class Customer
+    public class CustomerDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; } = string.Empty;

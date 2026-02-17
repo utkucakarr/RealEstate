@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using RealEstateAPI.Data;
+using Persistence.Data;
 
 #nullable disable
 
-namespace RealEstateAPI.Migrations
+namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260216131012_InitialCreatee")]
-    partial class InitialCreatee
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +22,7 @@ namespace RealEstateAPI.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("RealEstateAPI.Models.Customer", b =>
+            modelBuilder.Entity("Core.Entites.Customer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,7 +61,7 @@ namespace RealEstateAPI.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("RealEstateAPI.Models.Property", b =>
+            modelBuilder.Entity("Core.Entites.Property", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

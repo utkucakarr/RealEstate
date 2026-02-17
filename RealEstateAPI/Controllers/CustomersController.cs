@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using RealEstateAPI.Models;
-using RealEstateAPI.Repositories;
+﻿using Business.Dtos;
+using Business.Service;
+using Microsoft.AspNetCore.Mvc;
 
 namespace RealEstateAPI.Controllers
 {
@@ -8,53 +8,58 @@ namespace RealEstateAPI.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        private readonly ICustomerRepository _customerRepository;
+        private readonly ICustomerService _customerService;
 
-        public CustomersController(ICustomerRepository customerRepository)
+        // Artık IMapper enjekte etmemize gerek yok, çünkü servis katmanı bu işi hallediyor.
+        public CustomersController(ICustomerService customerService)
         {
-            _customerRepository = customerRepository;
+            _customerService = customerService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var customers = await _customerRepository.GetAllCustomersAsync();
-            return Ok(customers);
+            var customerDtos = await _customerService.GetAllAsync();
+            return Ok(customerDtos);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var customer = await _customerRepository.GetCustomerByIdAsync(id);
-            if (customer == null) return NotFound("Müşteri bulunamadı.");
+            var dto = await _customerService.GetByIdAsync(id);
+            if (dto == null) return NotFound("Müşteri bulunamadı.");
 
-            return Ok(customer);
+            return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Customer customer)
+        public async Task<IActionResult> Create(CustomerDto customerDto)
         {
-            await _customerRepository.AddCustomerAsync(customer);
-            return CreatedAtAction(nameof(GetById), new { id = customer.Id }, customer); // 201 Created
+            // Business katmanı mapping ve SaveChanges işlemlerini hallediyor.
+            await _customerService.AddAsync(customerDto);
+
+            // Not: customerDto içerisinde Id dolmuş olmalı (MappingProfile konfigürasyonuna bağlı)
+            return CreatedAtAction(nameof(GetById), new { id = customerDto.Id }, customerDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, Customer customer)
+        public async Task<IActionResult> Update(int id, CustomerDto customerDto)
         {
-            var existingCustomer = await _customerRepository.GetCustomerByIdAsync(id);
-            if (existingCustomer == null) return NotFound("Müşteri bulunamadı.");
-            await _customerRepository.UpdateCustomerAsync(id, customer);
-            return Ok(existingCustomer);
+            // Güncelleme öncesi varlık kontrolü servis içinde de yapılabilir
+            var existing = await _customerService.GetByIdAsync(id);
+            if (existing == null) return NotFound("Güncellenecek müşteri bulunamadı.");
+
+            await _customerService.UpdateAsync(id, customerDto);
+            return NoContent(); // Genelde güncelleme sonrası 204 No Content dönülür
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var existing = await _customerRepository.GetCustomerByIdAsync(id);
-            if (existing == null)
-                return NotFound("Müşteri Bulunamadı");
+            var existing = await _customerService.GetByIdAsync(id);
+            if (existing == null) return NotFound("Silinecek müşteri bulunamadı.");
 
-            await _customerRepository.DeleteCustomerAsync(id);
+            await _customerService.DeleteAsync(id);
             return NoContent();
         }
     }

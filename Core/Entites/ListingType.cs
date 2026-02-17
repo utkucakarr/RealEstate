@@ -1,4 +1,4 @@
-﻿namespace RealEstateAPI.Models
+﻿namespace Core.Entites
 {
     public enum ListingType
     {

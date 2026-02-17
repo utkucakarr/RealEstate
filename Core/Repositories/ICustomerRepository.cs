@@ -1,6 +1,6 @@
-﻿using RealEstateAPI.Models;
+﻿using Core.Entites;
 
-namespace RealEstateAPI.Repositories
+namespace Core.Repositories
 {
     public interface ICustomerRepository
     {

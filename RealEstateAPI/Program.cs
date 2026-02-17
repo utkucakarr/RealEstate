@@ -1,7 +1,10 @@
+using Business.Mapping;
+using Business.Service;
+using Core.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using RealEstateAPI.Data;
-using RealEstateAPI.Repositories;
+using Persistence.Data;
+using Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +13,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddMemoryCache();
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
+
 builder.Services.AddScoped<CustomerRepository>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 // Sonra Decorator (Cache) kaydýný yapýyoruz
 builder.Services.AddScoped<ICustomerRepository>(provider =>

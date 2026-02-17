@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace RealEstateAPI.Models
+namespace Core.Entites
 {
     public class Property
     {
